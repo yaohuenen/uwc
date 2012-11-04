@@ -10,13 +10,11 @@
     top: 0;
     right: 0;
 }
-#client textarea#msg {
+.client textarea#msg {
     resize: vertical;
-    width: 730px;
-    height: 18px;
-    min-height: 18px;
+    height: 28px;
+    min-height: 28px;
     max-height: 120px;
-    display: block;
 }
 .navbar .btn {
     margin-top: 0;
@@ -32,7 +30,6 @@
     margin-left: 20%;
     text-align: right;
 }
-
 #client,
 #support{
     padding-top: 20px;
@@ -52,7 +49,19 @@
 }
 #user-body iframe {
     width: 100%;
+    margin: 0 auto;
     border: none;
     min-height: 300px;
-    overflow: auto;
+}
+#clickAnimation {
+    display: none;
+    position: absolute;
+    z-index: 9999;
+    left: -500px;
+    top: -500px;
+    width: 60px;
+    height: 60px;
+    border-radius: 30px;
+    border: 2px dashed #FF0000;
+    background-color: rgba(0, 0, 0, 0.3);
 }

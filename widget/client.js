@@ -1,17 +1,16 @@
-var client = new function client() {
+var client = new function Client() {
     this.socketUrl = 'http://localhost:8080';
     this.popup  = null;
     this.chat  = null;
     this.socket = null;
     this.chatId = 0;
-    _this = this;
 
     this.connect = function() {
         if(this.socket == null) {
             this.socket = io.connect(this.socketUrl);
             this.chatId = Math.round(Math.random() * 10000 * (Math.random() * 51838)).toString();
             this.socket.on('message', function(data){
-                _this.parseMessage(data);
+                client.parseMessage(data);
             });
         }
     };
@@ -35,16 +34,31 @@ var client = new function client() {
             if(data.client == 0) { // входящее собщение от сапорта
                 this.printMessageText(data.msg, 'support');
             }
-            else if(data.client = 2) { // запрос на отправку контента
+            else if(data.client == 2) { // запрос на отправку контента
                 this.sendContent();
+            }
+            else if(data.client == 3) { // координаты клика
+                this.showClick(data.mx, data.my);
             }
         }
     };
+    this.showClick = function(x, y) {
+        if($('#clickAnimation').size() == 0) {
+            $('body').append('<div id="clickAnimation" style="display: none"></div>');
+        }
+        var _x = parseInt(x) - 30;
+        var _y = parseInt(y) - 30 + $('#client-widget').outerHeight(true);
+        $('#clickAnimation').stop(false, true).css({left: _x + 'px', top: _y + 'px'}).fadeIn(400, function(){
+            $(this).fadeOut(400);
+        });
+    };
     this.sendContent = function() {
+        var html = $('body').clone().find('#client-widget').remove().end().html();
         var data = {
             id: this.chatId,
             client: 2,
-            msg: $('html').html(),
+            html: html,
+            width: $(window).width(),
             time: new Date()
         };
         this.socket.emit('message', data);
@@ -61,7 +75,7 @@ var client = new function client() {
 
     this.printHTML = function() {
         if(this.popup == null) {
-            var modalHtml = '<div class="navbar">' +
+            var modalHtml = '<div class="navbar" id="client-widget">' +
                                 '<div class="navbar-inner">' +
                                 '<div class="container">' +
                                     '<div class="span9">' +
@@ -92,7 +106,7 @@ var client = new function client() {
                                 '</div>' +
                                 '</div>' +
                             '</div>';
-            this.popup = $('body').prepend(modalHtml).find('div#helpWindow');
+            this.popup = $('body.client').prepend(modalHtml).find('div#helpWindow');
         };
     };
     this.init = function() {
@@ -103,7 +117,7 @@ var client = new function client() {
             var message = textarea.val();
             message = '<div>' + message + '</div>';
             message = $(message).text(); // пропускаем только текст
-            _this.sendMessage(message);
+            client.sendMessage(message);
             textarea.val('');
             return false;
         });

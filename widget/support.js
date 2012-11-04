@@ -1,4 +1,4 @@
-var support = new function support() {
+var support = new function Support() {
     this.socketUrl = 'http://localhost:8080';
     this.button = null;
     this.chat  = null;
@@ -8,13 +8,12 @@ var support = new function support() {
     this.currentUser = 0;
     this.history = new Object();
     this.chat = $('div#help-content');
-    _this = this;
 
     this.connect = function() {
         if(this.socket == null) {
             this.socket = io.connect(this.socketUrl);
             this.socket.on('message', function(data){
-                _this.parseMessage(data);
+                support.parseMessage(data);
             });
         }
     };
@@ -33,6 +32,19 @@ var support = new function support() {
             this.printMessageText(message, 'support', this.currentUser);
         }
     };
+    this.sendClick = function(x, y) {
+        if(this.socket == null) {
+            this.connect();
+        }
+        var data = {
+            id: this.currentUser,
+            client: 3,
+            mx: x,
+            my: y,
+            time: new Date()
+        };
+        this.socket.emit('message', data);
+    };
     this.addUser = function(id) {
         this.users.push(id);
         this.history[id] = '';
@@ -44,6 +56,7 @@ var support = new function support() {
         this.currentUser = id;
         this.table.find('tr.user_' + this.currentUser).removeClass('success').addClass('info').find('.status').text('In Chat!');
         this.chat.html(this.history[this.currentUser]);
+        $('#user-body').addClass('hide').find('iframe').contents().find('body').empty();
     };
     this.closeChat = function() {
         this.table.find('tr.user_' + this.currentUser).removeClass('success').removeClass('info').find('.status').text('Closed');
@@ -51,6 +64,7 @@ var support = new function support() {
         this.currentUser = 0;
         $('#helpWindow .hide').hide();
         $('#helpWindow a.btn.user').removeClass('active');
+        $('#user-body').addClass('hide').find('iframe').contents().find('body').empty();
     };
     this.parseMessage = function(data) {
         if(data.client == 1) {
@@ -60,9 +74,18 @@ var support = new function support() {
             this.printMessageText(data.msg, 'user', data.id);
         }
         else if(data.client == 2) {
-            var clienHtml = '<!DOCTYPE html><html>' + data.msg + '</html>';
-            $('#user-body').removeClass('hide').find('iframe').contents().find('html').html(clienHtml);
-            //console.log(data.msg)
+            $('#user-body').removeClass('hide')
+                           .find('iframe')
+                           .width(data.width)
+                           .contents()
+                           .find('body')
+                           .html(data.html)
+                            .find('*')
+                           .unbind('click')
+                           .click(function(e) {
+                                parent.window.support.sendClick(e.pageX, e.pageY);
+                                return false;
+                           });
         }
     };
     this.printMessageText = function(text, from, userId) {
@@ -94,21 +117,21 @@ var support = new function support() {
             var message = textarea.val();
             message = '<div>' + message + '</div>';
             message = $(message).text(); // пропускаем только текст
-            _this.sendMessage(message);
+            support.sendMessage(message);
             textarea.val('');
             return false;
         });
         $('#helpWindow button.close').click(function() {
-            _this.closeChat();
+            support.closeChat();
             return false;
         });
         $('#show-viewport').click(function() {
-            _this.getUserContent();
+            support.getUserContent();
             return false;
         });
         this.table = $('#userlist');
         this.table.on('click', 'tr', function(){
-            _this.openChat($(this).attr('data-id'));
+            support.openChat($(this).attr('data-id'));
         });
         this.connect();
     };
