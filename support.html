@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Support</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <link type="text/css" href="css/bootstrap.css" rel="stylesheet"/>
+    <link type="text/css" href="css/bootstrap-responsive.css" rel="stylesheet"/>
+    <link type="text/css" href="css/custom.css" rel="stylesheet"/>
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="http://html5shim.googlecode.com/svn/trunk/html5.client"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+<div id="support" class="container">
+    <div id="user-body" class="">
+        <iframe src="iframe.html"></iframe>
+    </div>
+    <div class="row">
+        <div class="span5">
+            <div id="helpWindow" class="">
+                <div class="modal-header">
+                    <button class="close hide" type="button">&times;</button>
+                    <h3>User</h3>
+                </div>
+                <div class="hide">
+                    <div id="help-content" class="modal-body"></div>
+                    <div class="modal-footer">
+                        <form action="#" method="get" id="message-form">
+                            <div class="row">
+                                <div class="span3">
+                                    <textarea placeholder="Ask a question..." class="span3" name="message" id="msg"></textarea>
+                                </div>
+                                <div class="span1">
+                                    <input type="submit" value="Send" class="btn btn-primary" />
+                                </div>
+                            </div>
+                        </form>
+                        <button class="btn btn-info" id="show-viewport" type="button"><i class="icon-search"></i> Show viewport</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="span7">
+            <table id="userlist" class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+
+<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+<script type="text/javascript" src="widget/support.js"></script>
+</body>
+</html>

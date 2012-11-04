@@ -1,0 +1,58 @@
+#home {
+    text-align: center;
+}
+#message-form {
+    position: relative;
+    margin: 0;
+}
+#client #message-form input.btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+#client textarea#msg {
+    resize: vertical;
+    width: 730px;
+    height: 18px;
+    min-height: 18px;
+    max-height: 120px;
+    display: block;
+}
+.navbar .btn {
+    margin-top: 0;
+}
+#help-content .alert {
+    padding: 6px 10px;
+    margin: 0 0 10px;
+}
+#help-content .alert.alert-info {
+    margin-right: 20%;
+}
+#help-content .alert.alert-success {
+    margin-left: 20%;
+    text-align: right;
+}
+
+#client,
+#support{
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+#support textarea#msg {
+    resize: vertical;
+    height: 28px;
+    min-height: 28px;
+    max-height: 120px;
+}
+#support .modal-footer {
+    text-align: left;
+}
+#user-body {
+    padding: 0 0 20px;
+}
+#user-body iframe {
+    width: 100%;
+    border: none;
+    min-height: 300px;
+    overflow: auto;
+}
